@@ -8,8 +8,6 @@ def find_and_blur(bw, color):
 
     facesMtcnn = detector.detect_faces(color) #applying mtcnn
 
-
-
      ##########################################################
     for i in range(len(facesMtcnn)):#Mtcnn
         # get coordinates
@@ -25,25 +23,19 @@ def find_and_blur(bw, color):
 
     return color
 
-# turn camera on
+#provide path to image
+imagePath='C:\\Users\\hp\\Desktop\\1.png'
 
-    
+color = cv2.imread(imagePath)#read image
 
-video_capture = cv2.VideoCapture(0)
 
-while True:
-    # get last recorded frame
-    _, color = video_capture.read()
-    
-    # detect the face and blur it
-    blur = find_and_blur(color, color)
-    # display output
-    cv2.imshow('Video', blur)
-    # break if q is pressed
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+# detect the face and blur it
+blur = find_and_blur(color, color)
 
-# turn camera off        
-video_capture.release()
-# close camera  window
-cv2.destroyAllWindows()
+# display output
+cv2.imwrite(imagePath+"Pixelated.png",blur)
+
+cv2.imshow("Blurred Photo",blur)
+
+cv2.waitKey(0) # waits until a key is pressed
+cv2.destroyAllWindows() # destroys the window showing image
