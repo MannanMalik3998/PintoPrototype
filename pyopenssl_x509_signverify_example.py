@@ -1,6 +1,7 @@
 from OpenSSL import crypto
 from socket import gethostname
 import cv2
+import base64
 
 CERT_FILE = "selfsigned.crt"
 KEY_FILE = "private.key"
@@ -80,8 +81,10 @@ try:
     # # sign and verify PASS
     msg=hash_file(imagePath)
     sig = crypto.sign(priv_key, msg, 'sha256')
-    crypto.verify(ss_cert, sig, hash_file(imagePath2), 'sha256')
+    crypto.verify(ss_cert, sig, hash_file(imagePath), 'sha256')
     print("Successfully signed")
+    data_base64 = base64.b64encode(sig)
+    print(data_base64)
 
 except:
-    print("Signing failed due to corrupted data")
+    print("Signing failed due to corrupted/forged data")
