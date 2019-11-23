@@ -24,7 +24,7 @@ def find_and_blur(bw, color):
     return color
 
 #provide path to image
-imagePath='C:\\Users\\hp\\Desktop\\1.png'
+imagePath='C:\\Users\\hp\\Desktop\\3.png'
 
 color = cv2.imread(imagePath)#read image
 
