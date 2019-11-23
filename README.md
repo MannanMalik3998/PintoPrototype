@@ -4,6 +4,8 @@ Enabling privacy in surveillance footages
 ## Sample Output
 ![Sample Output of Prototype](1.png)
 
+![Sample Output of Prototype](2.png)
+
 ## Acknowledgement
 
 Yu, H., Lim, J., Kim, K., & Lee, S. B. (2018, October). Pinto: Enabling Video Privacy for Commodity IoT
