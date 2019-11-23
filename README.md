@@ -2,9 +2,11 @@
 Enabling privacy in surveillance footages
 
 ## Sample Output
-![Sample Output of Prototype](1.png)
+#### Sample Output of Pinto
+![Sample Output of Pinto](1.png)
 
-![Sample Output of Prototype](2.png)
+#### Sample Output of Pinto Prototype
+![Sample Output of Pinto Prototype](2.png)
 
 ## Acknowledgement
 
