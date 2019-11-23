@@ -6,7 +6,7 @@ from mtcnn.mtcnn import MTCNN # import MTCNN
 
 
 #provide path to image##################################################################
-imagePath='images\\5.jpg'
+imagePath='images\\4.png'
 ########################################################################################
 
 detector = MTCNN()#MTCNN initialized
