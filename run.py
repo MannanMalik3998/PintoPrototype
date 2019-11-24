@@ -10,7 +10,7 @@ import sys
 
 ############ Initializations ###############
 
-# run python run.py 1 imagePath to blur the sensitive are and sign the image
+# run python run.py 0 imagePath to blur the sensitive area and sign the image
 # run python run.py 1 imagePath to detect forgery in the received image
 
 #sys.argv[0]#path of file
