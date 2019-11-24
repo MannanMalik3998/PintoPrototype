@@ -1,6 +1,11 @@
 # PintoPrototype
 Enabling privacy in surveillance footages
 
+## Run
+To run the script<br/>
+###### run python run.py 0 imagePath to blur the sensitive area and sign the image
+###### run python run.py 1 imagePath to detect forgery in the received image
+
 ## Sample Output
 #### Sample Output of Pinto
 ![Sample Output of Pinto](1.png)
