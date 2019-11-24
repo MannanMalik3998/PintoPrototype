@@ -9,19 +9,14 @@ import os
 import sys
 
 ############ Initializations ###############
+
+# run python run.py 1 imagePath to blur the sensitive are and sign the image
+# run python run.py 1 imagePath to detect forgery in the received image
+
 #sys.argv[0]#path of file
 method = sys.argv[1]#parameters
 CERT_FILE = "selfsigned.crt"
 KEY_FILE = "private.key"
-
-senderImage='images\\2.png'
-receiverImage='images\\out2.png'
-
-# senderImage='images\\2.png'
-# receiverImage='images\\out2.png'
-
-imagePath=senderImage
-imagePath2=receiverImage
 
 NumberPlateDetectorPath='haarcascade_russian_plate_number.xml'
 detector = MTCNN()#MTCNN initialized
@@ -70,9 +65,9 @@ def find_and_blur(bw, color):
 
     return color #privacy protected image
 
-def protectPrivacy(imagePath):
+def protectPrivacy(img):
 
-    color = cv2.imread(imagePath)#read image
+    color = cv2.imread(img)#read image
 
     #cv2.imwrite(imagePath+"Blurred.png",facepixellate.pixellate_face(imagePath, 0)) #accuracy not so good
 
@@ -81,8 +76,8 @@ def protectPrivacy(imagePath):
 
     # display output
     # cv2.imwrite(imagePath+"Blurred.png",blur)
-    cv2.imwrite("images\\"+"out.png",blur)
-    signContent("images\\"+"out.png")
+    cv2.imwrite("temp\\"+"out.png",blur)
+    signContent("temp\\"+"out.png")
 
     cv2.imshow("Blurred Photo",blur)
 
@@ -158,7 +153,7 @@ def detectForgery(CERT_FILE, signaturePath, received):
     except:
         print("Forgery detected")
 
-def signContent(imagePath):
+def signContent(signImagePath):
     try:
         # Now the real world use case; use certificate to verify signature
         f = open(KEY_FILE)
@@ -170,7 +165,7 @@ def signContent(imagePath):
 
         
         # # sign and verify PASS
-        msg=hash_file(imagePath)
+        msg=hash_file(signImagePath)
         sig = crypto.sign(priv_key, msg, 'sha256')#signed the image
         
         open(signaturePath, 'a').close()
@@ -182,10 +177,11 @@ def signContent(imagePath):
     except:
         print("File path may not be correct")
 
+image = sys.argv[2]
 # makeCert() # call to make certificate
-if(method.__contains__('0')): 
-    protectPrivacy(imagePath) # call it to privacy protect the video
-if(method.__contains__('1')): 
-    detectForgery(CERT_FILE,signaturePath,imagePath2) # call it to detect forgery
+if(method=='0'): 
+    protectPrivacy(image) # call it to privacy protect the video
+elif(method=='1'): 
+    detectForgery(CERT_FILE,signaturePath,image) # call it to detect forgery
 else:
     print("Wrong input")
