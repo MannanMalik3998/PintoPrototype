@@ -172,9 +172,13 @@ def signContent(imagePath):
         # # sign and verify PASS
         msg=hash_file(imagePath)
         sig = crypto.sign(priv_key, msg, 'sha256')#signed the image
-        print(type(sig))
         
+        open('temp\\signature', 'a').close()
 
+        f = open('temp\\signature', 'wb')
+        f.write(sig)
+        f.close()
+        
     except:
         print("File path may not be correct")
 
