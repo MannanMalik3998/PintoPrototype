@@ -14,21 +14,22 @@ import sys
 # run python run.py 1 imagePath to detect forgery in the received image
 
 #sys.argv[0]#path of file
-method = sys.argv[1]#parameters
-CERT_FILE = "selfsigned.crt"
-KEY_FILE = "private.key"
 
-NumberPlateDetectorPath='haarcascade_russian_plate_number.xml'
+CERT_FILE = "E:\\Sem7\\IS\\Proj\\PintoPrototype\\selfsigned.crt"
+KEY_FILE = "E:\\Sem7\\IS\\Proj\\PintoPrototype\\private.key"
+
+NumberPlateDetectorPath='E:\\Sem7\\IS\\Proj\\PintoPrototype\\haarcascade_russian_plate_number.xml'
 detector = MTCNN()#MTCNN initialized
 cascade = cv2.CascadeClassifier(NumberPlateDetectorPath)#Haar initialized
-signaturePath='temp\\signature'
+signaturePath='E:\\Sem7\\IS\\Proj\\PintoPrototype\\temp\\signature'
+storeSignaturePath='E:\\Sem7\\IS\\Proj\\PintoPrototype\\temp\\out.png'
 
 # cascade = cv2.CascadeClassifier(NumberPlateDetectorPath)#Haar initialized
 
 # import facepixellate #try if you want, but its accuracy is not so good 
 
 def find_and_blur(bw, color): 
-    # detect al faces
+    # detect all faces
 
     ##########################################################
     facesMtcnn = detector.detect_faces(color) #applying mtcnn
@@ -75,15 +76,14 @@ def protectPrivacy(img):
     blur = find_and_blur(color, color)#blur contains the privacy protected image
 
     # display output
-    # cv2.imwrite(imagePath+"Blurred.png",blur)
-    cv2.imwrite("temp\\"+"out.png",blur)
-    signContent("temp\\"+"out.png")
-
-    cv2.imshow("Blurred Photo",blur)
-
-    cv2.waitKey(0) # waits until a key is pressed
-    cv2.destroyAllWindows() # destroys the window showing image
-
+    cv2.imwrite(storeSignaturePath,blur)#store image to send
+    signContent(storeSignaturePath)#sign image to send
+     
+    # #uncomment this if you want to display picture through terminal
+    # cv2.imshow("Blurred Photo",blur)
+    # cv2.waitKey(0) # waits until a key is pressed
+    # cv2.destroyAllWindows() # destroys the window showing image
+    
 def hash_file(filename):
    """"This function returns the SHA-1 hash
    of the file passed into it"""
@@ -160,9 +160,6 @@ def signContent(signImagePath):
         pv_buf = f.read()
         f.close()
         priv_key = crypto.load_privatekey(crypto.FILETYPE_PEM, pv_buf)
-
-        
-
         
         # # sign and verify PASS
         msg=hash_file(signImagePath)
@@ -177,11 +174,16 @@ def signContent(signImagePath):
     except:
         print("File path may not be correct")
 
-image = sys.argv[2]
-# makeCert() # call to make certificate
-if(method=='0'): 
-    protectPrivacy(image) # call it to privacy protect the video
-elif(method=='1'): 
-    detectForgery(CERT_FILE,signaturePath,image) # call it to detect forgery
-else:
-    print("Wrong input")
+method = sys.argv[1]#Privacy protection or authenticity check
+image = sys.argv[2]#image path
+try:
+    # makeCert() # call to make certificate
+
+    if(method=='0'): 
+        protectPrivacy(image) # call it to privacy protect the video
+    elif(method=='1'):
+        detectForgery(CERT_FILE,signaturePath,image) # call it to detect forgery
+    else:
+        print("Wrong input")
+except Exception as e:
+	print(e)

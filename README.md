@@ -13,6 +13,9 @@ To run the script<br/>
 #### Sample Output of Pinto Prototype
 ![Sample Output of Pinto Prototype](2.png)
 
+#### Sample Output of Pinto Prototype
+![Sample Output of Pinto Prototype](3.png)
+
 ## Acknowledgement
 
 Yu, H., Lim, J., Kim, K., & Lee, S. B. (2018, October). Pinto: Enabling Video Privacy for Commodity IoT

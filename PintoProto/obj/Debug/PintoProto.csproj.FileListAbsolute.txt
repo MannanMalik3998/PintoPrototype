@@ -1,0 +1,9 @@
+E:\Sem7\IS\Proj\PintoPrototype\PintoProto\bin\Debug\PintoProto.exe
+E:\Sem7\IS\Proj\PintoPrototype\PintoProto\bin\Debug\PintoProto.pdb
+E:\Sem7\IS\Proj\PintoPrototype\PintoProto\obj\Debug\PintoProto.csprojAssemblyReference.cache
+E:\Sem7\IS\Proj\PintoPrototype\PintoProto\obj\Debug\PintoProto.Form1.resources
+E:\Sem7\IS\Proj\PintoPrototype\PintoProto\obj\Debug\PintoProto.Properties.Resources.resources
+E:\Sem7\IS\Proj\PintoPrototype\PintoProto\obj\Debug\PintoProto.csproj.GenerateResource.cache
+E:\Sem7\IS\Proj\PintoPrototype\PintoProto\obj\Debug\PintoProto.csproj.CoreCompileInputs.cache
+E:\Sem7\IS\Proj\PintoPrototype\PintoProto\obj\Debug\PintoProto.exe
+E:\Sem7\IS\Proj\PintoPrototype\PintoProto\obj\Debug\PintoProto.pdb
