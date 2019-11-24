@@ -8,20 +8,25 @@ import hashlib
 import os
 import sys
 
+############ Initializations ###############
 #sys.argv[0]#path of file
 #sys.argv[1-n]#parameters
 CERT_FILE = "selfsigned.crt"
 KEY_FILE = "private.key"
-imagePath='images\\2.png'
-imagePath2='images\\1.pngPixelated2.png'
+senderImage='images\\2.png'
+receiverImage='images\\out2.png'
+
+imagePath=senderImage
+imagePath2=receiverImage
+
 NumberPlateDetectorPath='haarcascade_russian_plate_number.xml'
 detector = MTCNN()#MTCNN initialized
 cascade = cv2.CascadeClassifier(NumberPlateDetectorPath)#Haar initialized
+signaturePath='temp\\signature'
+
 # cascade = cv2.CascadeClassifier(NumberPlateDetectorPath)#Haar initialized
 
 # import facepixellate #try if you want, but its accuracy is not so good 
-
-
 
 def find_and_blur(bw, color): 
     # detect al faces
@@ -59,7 +64,7 @@ def find_and_blur(bw, color):
 
     ##########################################################
 
-    return color
+    return color #privacy protected image
 
 def protectPrivacy(imagePath):
 
@@ -69,10 +74,6 @@ def protectPrivacy(imagePath):
 
     # detect the face and blur it
     blur = find_and_blur(color, color)#blur contains the privacy protected image
-
-    ############# Now find the hash and sign with tsa #####################
-
-    #######################################################################
 
     # display output
     # cv2.imwrite(imagePath+"Blurred.png",blur)
@@ -101,11 +102,11 @@ def hash_file(filename):
    # return the hex representation of digest
    return h.hexdigest()
 
-def makeCert(imagePath):#generate a self signed certificate
+def makeCert():#generate a self signed certificate
     k = crypto.PKey()
     k.generate_key(crypto.TYPE_RSA, 2048)  # generate RSA key-pair
 
-
+    #Credentials of certificate
     cert = crypto.X509()
     cert.get_subject().C = "PK"
     cert.get_subject().ST = "Karachi"
@@ -120,15 +121,10 @@ def makeCert(imagePath):#generate a self signed certificate
     cert.set_pubkey(k)
     cert.sign(k, 'sha256')
 
-   
-
-    # pass certificate around, but of course keep private.key
-
-
-
     open(CERT_FILE, 'a').close()
     open(KEY_FILE, 'a').close()
 
+    # dumping certificate and keypair on disk
     f = os.open(CERT_FILE,os.O_WRONLY)
     os.write(f, crypto.dump_certificate(crypto.FILETYPE_PEM, cert))
     os.close(f)
@@ -137,10 +133,7 @@ def makeCert(imagePath):#generate a self signed certificate
     os.write(f2, crypto.dump_privatekey(crypto.FILETYPE_PEM, k))
     os.close(f2)
 
-
-# makeCert() # call to make certificate
-
-def detectForgery(CERT_FILE, sig, imagePath):
+def detectForgery(CERT_FILE, signaturePath, imagePath2):
     
     try:
         #open certificate
@@ -149,11 +142,14 @@ def detectForgery(CERT_FILE, sig, imagePath):
         f.close()
         ss_cert = crypto.load_certificate(crypto.FILETYPE_PEM, ss_buf)
 
-        crypto.verify(ss_cert, sig, hash_file(imagePath), 'sha256')
-        print("Authenticated")
-        #data_base64 = base64.b64encode(sig)
-        #print(data_base64)
+        #open the signed content received
+        f = open(signaturePath, 'rb')
+        sig=f.read()
+        f.close()
 
+        # verify the integrity of received image with the certificate and signature
+        crypto.verify(ss_cert, sig, hash_file(imagePath2), 'sha256')
+        print("Authenticated")
     
     except:
         print("Forgery detected")
@@ -173,13 +169,15 @@ def signContent(imagePath):
         msg=hash_file(imagePath)
         sig = crypto.sign(priv_key, msg, 'sha256')#signed the image
         
-        open('temp\\signature', 'a').close()
+        open(signaturePath, 'a').close()
 
-        f = open('temp\\signature', 'wb')
+        f = open(signaturePath, 'wb')
         f.write(sig)
         f.close()
         
     except:
         print("File path may not be correct")
 
-protectPrivacy(imagePath)
+# makeCert() # call to make certificate
+#protectPrivacy(imagePath) # call it to privacy protect the video
+detectForgery(CERT_FILE,signaturePath,imagePath) # call it to detect forgery
