@@ -10,11 +10,15 @@ import sys
 
 ############ Initializations ###############
 #sys.argv[0]#path of file
-#sys.argv[1-n]#parameters
+method = sys.argv[1]#parameters
 CERT_FILE = "selfsigned.crt"
 KEY_FILE = "private.key"
+
 senderImage='images\\2.png'
 receiverImage='images\\out2.png'
+
+# senderImage='images\\2.png'
+# receiverImage='images\\out2.png'
 
 imagePath=senderImage
 imagePath2=receiverImage
@@ -78,7 +82,7 @@ def protectPrivacy(imagePath):
     # display output
     # cv2.imwrite(imagePath+"Blurred.png",blur)
     cv2.imwrite("images\\"+"out.png",blur)
-    signContent(imagePath)
+    signContent("images\\"+"out.png")
 
     cv2.imshow("Blurred Photo",blur)
 
@@ -133,7 +137,7 @@ def makeCert():#generate a self signed certificate
     os.write(f2, crypto.dump_privatekey(crypto.FILETYPE_PEM, k))
     os.close(f2)
 
-def detectForgery(CERT_FILE, signaturePath, imagePath2):
+def detectForgery(CERT_FILE, signaturePath, received):
     
     try:
         #open certificate
@@ -148,7 +152,7 @@ def detectForgery(CERT_FILE, signaturePath, imagePath2):
         f.close()
 
         # verify the integrity of received image with the certificate and signature
-        crypto.verify(ss_cert, sig, hash_file(imagePath2), 'sha256')
+        crypto.verify(ss_cert, sig, hash_file(received), 'sha256')
         print("Authenticated")
     
     except:
@@ -179,5 +183,9 @@ def signContent(imagePath):
         print("File path may not be correct")
 
 # makeCert() # call to make certificate
-#protectPrivacy(imagePath) # call it to privacy protect the video
-detectForgery(CERT_FILE,signaturePath,imagePath) # call it to detect forgery
+if(method.__contains__('0')): 
+    protectPrivacy(imagePath) # call it to privacy protect the video
+if(method.__contains__('1')): 
+    detectForgery(CERT_FILE,signaturePath,imagePath2) # call it to detect forgery
+else:
+    print("Wrong input")
