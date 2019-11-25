@@ -8,9 +8,11 @@ using System.Linq;
 using System.Net.Mail;
 using System.Text;
 using System.Windows.Forms;
+using Microsoft.VisualBasic;
 
 namespace PintoProto
 {
+    
     public partial class Form1 : Form
     {
         public Form1()
@@ -21,23 +23,30 @@ namespace PintoProto
 
         private void Button1_Click(object sender, EventArgs e)//blur
         {
+            
+            label2.Text = "";
+            label1.Text = "";
+            //pictureBox1.Image = null;  
+            button3.Visible = false;
             OpenFileDialog open = new OpenFileDialog();
             // image filters  
             open.Filter = "Image Files(*.jpg; *.jpeg; *.bmp;*.png)|*.jpg; *.jpeg; *.bmp; *.png";
             if (open.ShowDialog() == DialogResult.OK)
             {
-
                 // image file path  
                 label1.Text = open.FileName;
+                //MessageBox.Show(open.FileName,"FileName");
             }
 
             callScript("0");
+            label1.Text = "";
 
             // display image in picture box  
             pictureBox1.Image = new Bitmap(@"E:\Sem7\IS\Proj\PintoPrototype\temp\out.png");
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
 
             button3.Visible = true;
+            button1.Visible = false;
             
             //********************************************************************************
         }
@@ -108,16 +117,18 @@ namespace PintoProto
         {//sends mail
             try
             {
-                string sender = "abdman3998@gmail.com";//enter sender email here
-                string pass = "aeiouilu1";//enter sender's email password here
+                string receiver=Microsoft.VisualBasic.Interaction.InputBox("Enter email id:", "Email", "manan.hameed47@gmail.com");
+
+                string sender = configuration.user;
+                string pass = configuration.pass;
 
                 MailMessage mail = new MailMessage();
                 SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
 
                 mail.From = new MailAddress(sender);
-                mail.To.Add("manan.hameed47@gmail.com");
+                mail.To.Add(receiver);
                 mail.Subject = "Pinto Test";
-                mail.Body = "Test";
+                mail.Body = "Requested picture";
                 mail.Attachments.Add(new Attachment(@"E:\Sem7\IS\Proj\PintoPrototype\temp\out.png"));
                 mail.Attachments.Add(new Attachment(@"E:\Sem7\IS\Proj\PintoPrototype\temp\signature"));
                 mail.Attachments.Add(new Attachment(@"E:\Sem7\IS\Proj\PintoPrototype\selfsigned.crt"));
@@ -136,8 +147,10 @@ namespace PintoProto
 
         private void Button3_Click(object sender, EventArgs e)//send mail
         {
+            
             if (sendMail() == 1) {
                 label2.Text = "Email sent";
+                button3.Visible = false;
             }
 
             return;

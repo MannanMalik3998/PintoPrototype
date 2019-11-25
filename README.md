@@ -5,6 +5,7 @@ Enabling privacy in surveillance footages
 To run the script<br/>
 ###### run python run.py 0 imagePath to blur the sensitive area and sign the image
 ###### run python run.py 1 imagePath to detect forgery in the received image
+###### Paths will have to be adjusted in the script as well as the configuration.cs file in windows form
 
 ## Sample Output
 #### Sample Output of Pinto
@@ -15,6 +16,7 @@ To run the script<br/>
 
 #### Sample Output of Pinto Prototype
 ![Sample Output of Pinto Prototype](3.png)
+
 
 ## Acknowledgement
 
